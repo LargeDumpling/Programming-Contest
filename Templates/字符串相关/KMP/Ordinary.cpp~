@@ -1,0 +1,31 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
+#include<cmath>
+#include<algorithm>
+using namespace std;
+char tex[1050],T[100050];
+int n,m;
+int search()
+{
+	n=strlen(tex);
+	m=strlen(T);
+	for(int i=0,j;i<m;i++)
+	{
+		for(j=0;j<n&&tex[j]==T[i+j];j++);
+		if(j==n-1)
+			return i;
+	}
+	return -1;
+}
+int main()
+{
+	freopen("code.in","r",stdin);
+	freopen("Ordinary.out","w",stdout);
+	scanf("%s%s",tex,T);
+	printf("%d",search());
+	fclose(stdin);
+	fclose(stdout);
+	return 0;
+}

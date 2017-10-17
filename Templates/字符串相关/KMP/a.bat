@@ -1,0 +1,1 @@
+gcc data.cpp -o data.exe -g

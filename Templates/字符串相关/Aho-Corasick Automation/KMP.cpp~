@@ -1,0 +1,69 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
+#include<cmath>
+#include<algorithm>
+using namespace std;
+int n,m,len[105],pre[105][1005];
+char tex[105][1005];
+void getfail()
+{
+	for(int i=1;i<=n;i++)
+	{
+		pre[i][0]=-1;
+		for(int j=1,k=-1;j<len[i];j++)
+		{
+			while(k>=0&&tex[i][j]!=tex[i][k+1])
+				k=pre[i][k];
+			if(tex[i][j]==tex[i][k+1])
+				k++;
+			pre[i][j]=k;
+		}
+	}
+	return;
+}
+bool find(char T[])
+{
+	int lenth=strlen(T);
+	for(int i=1;i<=n;i++)
+	{
+		for(int j=0,k=-1;j<=lenth;j++)
+		{
+			while(k>=0&&T[j]!=tex[i][k+1])
+				k=pre[i][k];
+			if(T[j]==tex[i][k+1])
+			{
+				k++;
+				if(k==len[i]-1)
+					return true;
+			}
+		}
+	}
+	return false;
+}
+int main()
+{
+	freopen("code.in","r",stdin);
+	freopen("KMP.out","w",stdout);
+	char temp[100050];
+	scanf("%d%d",&n,&m);
+	for(int i=1;i<=n;i++)
+	{
+		scanf("%s",tex[i]);
+		len[i]=strlen(tex[i]);
+	}
+	getfail();
+	for(int i=1;i<=m;i++)
+	{
+		scanf("%s",temp);
+		if(find(temp))
+			printf("Yes!\n");
+		else
+			printf("No!\n");
+	}
+	fclose(stdin);
+	fclose(stdout);
+	return 0;
+}
+
