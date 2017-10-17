@@ -1,0 +1,1 @@
+1、写个AC自动机连getfail都忘了写是shen me gui；
