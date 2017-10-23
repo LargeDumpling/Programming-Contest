@@ -43,8 +43,7 @@ double dOt(const Vec &V1,const Vec &V2) { return V1.x*V2.x+V1.y*V2.y; }
 double cRoss(const Vec &V1,const Vec &V2) { return V1.x*V2.y-V1.y*V2.x; }
 double aRea(const Vec &V1,const Vec &V2) { return fabs(cRoss(V1,V2)); }
 double lEnth(const Vec &V) { return sqrt(dOt(V,V)); }
-double aNgle(const Vec &V1,const Vec &V2)
-{ return acos(dOt(V1,V2)/lEnth(V1)/lEnth(V2)); }
+double aNgle(const Vec &V1,const Vec &V2) { return acos(dOt(V1,V2)/lEnth(V1)/lEnth(V2)); }
 Vec rOtate(const Vec &V,const double &P)
 {
 	double cOs=cos(P),sIn=sin(P);

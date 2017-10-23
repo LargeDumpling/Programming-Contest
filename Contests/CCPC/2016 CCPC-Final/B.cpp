@@ -122,6 +122,6 @@ int main()
 	}
 	fclose(stdin);
 	fclose(stdout);
-	return 0;
+	//return 0;
 }
 
