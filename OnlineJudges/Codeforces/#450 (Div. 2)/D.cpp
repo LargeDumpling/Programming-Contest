@@ -50,17 +50,18 @@ int calc_u(long long x)
 		if(!(x%pri[i]))
 			return 0;
 	}
+	if(1<x) cnt++;
 	if(cnt&1) return -1;
 	return 1;
 }
-long long f(long long x)
+long long f(long long x) { return pOw(2LL,x-1); }
+long long calc(long long x)
 {
-	long long ans=pOw(2LL,x-1);
-	if(x!=1) ans=(ans-1+mod)%mod;
-	for(int i=2;i*i<=x;i++) if(!(x%i))
+	long long ans=0;
+	for(int i=1;i*i<=x;i++) if(!(x%i))
 	{
-		if(u[i]) ans=(ans+u[i]*f(x/i)%mod+mod)%mod;
-		if(calc_u(x/i)&&i*i!=x) ans=(ans+calc_u(x/i)*f(i)%mod+mod)%mod;
+		ans=(ans+u[i]*f(x/i)%mod+mod)%mod;
+		if(i*i!=x) ans=(ans+calc_u(x/i)*f(i)%mod+mod)%mod;
 	}
 	return ans;
 }
@@ -70,7 +71,7 @@ int main()
 	long long x,y;
 	scanf("%I64d%I64d",&x,&y);
 	if(y%x) printf("0");
-	else printf("%I64d",f(y/x));
+	else printf("%I64d",calc(y/x));
 	fclose(stdin);
 	fclose(stdout);
 	return 0;
