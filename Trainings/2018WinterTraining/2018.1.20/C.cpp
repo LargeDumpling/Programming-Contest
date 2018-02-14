@@ -29,29 +29,23 @@ long long pOw1(long long a,long long n)
 }
 void down(int root)
 {
-	if(L[root]==R[root]||(!tag[root][0]&&!tag[root][1])) return;
+	if(L[root]==R[root]||(tag[root][0]==0&&tag[root][1]==1)) return;
 	if(tag[root][1])
 	{
-		//data[root<<1]=data[root<<1]*pOw1(tag[root][1],R[root<<1]-L[root<<1]+1)%mod;
 		data[root<<1]=data[root<<1]*tag[root][1]%mod;
 		tag[root<<1][1]=(tag[root<<1][1]*tag[root][1])%mod;
 		tag[root<<1][0]=tag[root<<1][0]*tag[root][1]%mod;
-
-		//data[root<<1|1]=data[root<<1|1]*pOw1(tag[root][1],R[root<<1|1]-L[root<<1|1]+1)%mod;
 		data[root<<1|1]=data[root<<1|1]*tag[root][1]%mod;
 		tag[root<<1|1][1]=(tag[root<<1|1][1]*tag[root][1])%mod;
 		tag[root<<1|1][0]=tag[root<<1|1][0]*tag[root][1]%mod;
-
-		tag[root][1]=0;
+		tag[root][1]=1;
 	}
 	if(tag[root][0])
 	{
 		data[root<<1]=(data[root<<1]+tag[root][0]*(R[root<<1]-L[root<<1]+1)%mod)%mod;
 		tag[root<<1][0]=(tag[root<<1][0]+tag[root][0])%mod;
-		
 		data[root<<1|1]=(data[root<<1|1]+tag[root][0]*(R[root<<1|1]-L[root<<1|1]+1)%mod)%mod;
 		tag[root<<1|1][0]=(tag[root<<1|1][0]+tag[root][0])%mod;
-
 		tag[root][0]=0;
 	}
 	return;
@@ -59,7 +53,8 @@ void down(int root)
 void build(int root,int l,int r)
 {
 	L[root]=l; R[root]=r;
-	tag[root][0]=tag[root][1]=data[root]=0;
+	tag[root][0]=data[root]=0;
+	tag[root][1]=1;
 	if(l==r)
 	{
 		data[root]=lg[num[l]];
@@ -73,13 +68,13 @@ void build(int root,int l,int r)
 }
 void add(int root,int l,int r,long long x)
 {
+	down(root);
 	if(l<=L[root]&&R[root]<=r)
 	{
 		data[root]=(data[root]+x*(R[root]-L[root]+1)%mod)%mod;
 		tag[root][0]+=x;
 		return;
 	}
-	down(root);
 	int mid=(L[root]+R[root])>>1;
 	if(l<=mid) add(root<<1,l,r,x);
 	if(mid<r) add(root<<1|1,l,r,x);
@@ -88,15 +83,14 @@ void add(int root,int l,int r,long long x)
 }
 void multi(int root,int l,int r,long long k)
 {
+	down(root);
 	if(l<=L[root]&&R[root]<=r)
 	{
-		//data[root]=data[root]*pOw1(k,R[root]-L[root]+1)%mod;
 		data[root]=data[root]*k%mod;
 		tag[root][1]=(tag[root][1]*k)%mod;
 		tag[root][0]=(tag[root][0]*k)%mod;
 		return;
 	}
-	down(root);
 	int mid=(L[root]+R[root])>>1;
 	if(l<=mid) multi(root<<1,l,r,k);
 	if(mid<r) multi(root<<1|1,l,r,k);
@@ -133,7 +127,7 @@ void read1n(Ty &x)
 int main()
 {
 	freopen("C.in","r",stdin);
-	//freopen("C.out","w",stdout);
+	freopen("C.out","w",stdout);
 	int op,l,r;
 	long long x;
 	read1n(T_T);
