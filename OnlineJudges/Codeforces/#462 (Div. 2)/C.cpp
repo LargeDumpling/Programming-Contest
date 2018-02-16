@@ -27,7 +27,7 @@ int main()
 		mAx=-2147483647;
 		for(int r=l+1;r<=n;r++)
 		{
-			if(mAx!=-1)
+			if(mAx!=-2147483647)
 				ans=max(ans,mAx+l+r-2*s[l]-2*s[r]+s[n]);
 			mAx=max(mAx,2*s[r]-r);
 		}
