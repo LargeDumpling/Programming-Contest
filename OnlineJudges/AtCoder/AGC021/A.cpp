@@ -12,22 +12,20 @@
 #include<cmath>
 #include<algorithm>
 using namespace std;
-int n,d,num[105];
+char str[20];
+int len,sum;
 int main()
 {
-	int l,r,ans;
-	scanf("%d%d",&n,&d);
-	ans=n;
-	for(int i=1;i<=n;i++)
-		scanf("%d",&num[i]);
-	sort(num+1,num+n+1);
-	r=1;
-	for(l=1;l<=n;l++)
+	int ans=0;
+	scanf("%s",str+1);
+	len=strlen(str+1);
+	for(int i=1;i<=len;i++)
 	{
-		while(r<n&&num[r+1]-num[l]<=d) r++;
-		if(num[r]-num[l]<=d)
-			ans=min(ans,n-(r-l+1));
+		sum+=str[i]-'0';
+		if(str[i]-'0')
+			ans=max(ans,sum-1+(len-i)*9);
 	}
+	ans=max(ans,sum);
 	printf("%d",ans);
 	fclose(stdin);
 	fclose(stdout);
