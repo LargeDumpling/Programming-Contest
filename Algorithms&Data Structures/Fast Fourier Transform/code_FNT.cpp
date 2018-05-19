@@ -5,94 +5,76 @@
 #include<cmath>
 #include<algorithm>
 using namespace std;
-const int N=1<<18,P=(479<<21)+1,G=3;
-long long A[240050],B[240050],inv,W[2][240050];
-int rev[240050],n;
-long long Q_pow(long long a,int x)
+const int P=(479<<21)+1,G=3,D=10000000;
+int A[405000],B[405000],rev[400050],n,m,lenth,inver;
+char in[D],*I=in,out[D/10],*O=out;
+template<typename Ty>void read1n(Ty &x)
 {
-	long long ans=1;
-	while(x)
-	{
-		if(x&1)
-			ans=(ans*a)%P;
-		a=(a*a)%P;
-		x>>=1;
-	}
-	return ans;
-}
-void FNT_pre(int &n)
-{
-	int tem=1;while((1<<tem)<n)tem++;n=1<<tem;
-//	W[0][0]=W[0][n]=1;
-//	W[0][1]=Q_pow(G,(P-1)/n);
-	inv=Q_pow(n,P-2);
-//	for(int i=2;i<n;i++)W[0][i]=(long long)(W[0][i-1]*W[0][1])%P;
-//	for(int i=0;i<=n;i++)W[1][i]=W[0][n-i];
-	for(int i=1;i<n;i++)rev[i]=(rev[i>>1]>>1)|(i&1)<<(tem-1);
+	for(x=0;*I<'0'||'9'<*I;I++);
+	while('0'<=*I&&*I<='9')x=(x<<1)+(x<<3)+*(I++)-'0';
 	return;
 }
-void FNT(long long X[],int n,int inver)
+template<typename Ty>void write1n(Ty x)
+{
+	static int s[70];
+	if(!x)*(O++)='0';
+	for(s[0]=0;x;x/=10)s[++s[0]]=(int)x%10;
+	while(s[0])*(O++)=s[s[0]--]+'0';
+	return;
+}
+int pOw(int a,int n)
+{
+	int ans;
+	for(ans=1;n;n>>=1,a=(int)((long long)a*a%P))
+		if(n&1)ans=(int)((long long)ans*a%P);
+	return ans;
+}
+void FFT_pre(int &n)
+{
+	int tem;for(tem=0;(1<<tem)<n;tem++);n=1<<tem;
+	for(int i=0;i<n;i++)rev[i]=rev[i>>1]>>1|((i&1)<<(tem-1));
+	inver=pOw(n,P-2);
+	return;
+}
+void FFT(int X[],int n,bool inv)
 {
 	for(int i=0;i<n;i++)if(rev[i]>i)swap(X[i],X[rev[i]]);
-	long long temp,cur=1,w;
-	for(int i=2;i<=n;i<<=1)
+	int temk,w,cur,temp;
+	for(int k=2;k<=n;k<<=1)
 	{
-		cur=1;
-		w=Q_pow(G,(P-1)/i);
-		if(inver)w=Q_pow(w,i-1);
-		for(int k=0;k<(i>>1);k++)
+		temk=k>>1;
+		cur=1;w=pOw(G,(P-1)/k);
+		if(inv)w=pOw(w,k-1);
+		for(int i=0;i<temk;i++)
 		{
-			for(int j=0;j<n;j+=i)
+			for(int j=0;j<n;j+=k)
 			{
-				temp=(long long)/*(W[inver][k*n/i]*/(cur*X[j+k+(i>>1)])%P;
-				X[j+k+(i>>1)]=(long long)(X[j+k]+P-temp)%P;
-				X[j+k]=(long long)(X[j+k]+temp)%P;
+				temp=(int)((long long)cur*X[i+j+temk]%P);
+				X[i+j+temk]=(int)((long long)(X[i+j]-temp+P)%P);
+				X[i+j]=(int)((long long)(X[i+j]+temp)%P);
 			}
-			cur=(cur*w)%P;
+			cur=(int)((long long)cur*w%P);
 		}
 	}
-	if(inver)
-		for(int i=0;i<n;i++)
-			X[i]=(long long)(X[i]*inv)%P;
-	return; 
+	if(inv)for(int i=0;i<n;i++)X[i]=(int)((long long)X[i]*inver%P);
+	return;
 }
 int main()
 {
-	freopen("code.in","r",stdin);
-	freopen("code_FNT.out","w",stdout);
-	int m;
-	char tex[60050];
-	scanf("%d",&n);
-	m=n;
-	printf("%d\n",n);
-	scanf("%s",tex);
-	for(int i=0;i<n;i++)
-		A[i]=tex[n-i-1]-'0';
-	scanf("%s",tex);
-	for(int i=0;i<n;i++)
-		B[i]=tex[n-i-1]-'0';
-	n+=n;
-	FNT_pre(n);
-	FNT(A,n,0);FNT(B,n,0);
-	for(int i=0;i<n;i++)
-		A[i]=(A[i]*B[i])%P;
-	FNT(A,n,1);
-	for(int i=0;i<n;i++)
-		if(A[i]>=10)
-		{
-			A[i+1]+=A[i]/10;
-			A[i]%=10;
-			if(i==n-1)
-				n++;
-		}
-	while(!A[n-1])n--;
-	for(int i=n-1;i>=0;i--)
-		printf("%d",A[i]);
-//	printf("\n");
-//	for(int i=m-1;i>=0;i--)
-//		printf("%d",B[i]);
-	fclose(stdin);
-	fclose(stdout);
+	in[fread(in,1,D,stdin)]=-1;
+	read1n(n);read1n(m);n++;m++;
+	lenth=n+m-1;
+	for(int i=0;i<n;i++)read1n(A[i]);
+	for(int i=0;i<m;i++)read1n(B[i]);
+	n=max(n,m);
+	n<<=1;
+	FFT_pre(n);
+	FFT(A,n,false);
+	FFT(B,n,false);
+	for(int i=0;i<n;i++)A[i]=(int)((long long)A[i]*B[i]%P);
+	FFT(A,n,true);
+	for(int i=0;i<lenth;i++)write1n(A[i]),*(O++)=' ';
+	fwrite(out,1,O-out,stdout);
 	return 0;
 }
 
