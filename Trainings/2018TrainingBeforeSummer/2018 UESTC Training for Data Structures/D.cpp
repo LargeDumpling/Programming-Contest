@@ -109,7 +109,6 @@ bool check(int x)
 int main()
 {
 	int l,r,mid;
-	freopen("D.in","r",stdin);
 	read1n(n); read1n(k);
 	for(int i=1;i<=n;i++)
 		read1n(num[i]);
