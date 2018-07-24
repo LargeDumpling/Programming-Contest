@@ -49,7 +49,7 @@ void down(int root)
 }
 void change(int root,int l,int r,int x)
 {
-	if(r<l) return;
+	if(r<l) return; //because of line 98, 99, 103, 104, ignore this will cause a Wrong Answer.
 	if(l<=L[root]&&R[root]<=r)
 	{
 		sum[root]=x*(R[root]-L[root]+1);
@@ -61,7 +61,7 @@ void change(int root,int l,int r,int x)
 	if(l<=mid) change(root<<1,l,r,x);
 	if(mid<r) change(root<<1|1,l,r,x);
 	/*if(l<=R[root<<1]) change(root<<1,l,r,x);
-	if(R[root<<1]<r) change(root<<1|1,l,r,x);*/ //this may cause a Runtime Error
+	if(R[root<<1]<r) change(root<<1|1,l,r,x);*/ //this will cause a Runtime Error.
 	maintain(root);
 	return;
 }
