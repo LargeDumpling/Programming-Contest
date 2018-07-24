@@ -91,7 +91,7 @@ int main()
 			printf("%lld\n",ans.num[1][0]);
 		}
 	}
-	fprintf(stderr,"%lf\n",(double)clock()/CLOCKS_PER_SEC);
+	//fprintf(stderr,"%lf\n",(double)clock()/CLOCKS_PER_SEC);
 	fclose(stdin);
 	fclose(stdout);
 	return 0;

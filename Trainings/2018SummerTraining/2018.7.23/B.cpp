@@ -13,17 +13,15 @@
 #include<algorithm>
 using namespace std;
 const int MAXN=100050;
-struct jz { int l,r; }s[MAXN];
+struct jz
+{
+	int l,r;
+	bool operator<(const jp &X)const
+	{
+	}
+}s[MAXN];
 int T_T,n,ans;
 char str[MAXN];
-bool cmp(jz a,jz b)
-{
-	int nowa,nowb;
-	nowa=min(a.l,b.r);
-	nowb=min(b.l,a.r);
-	if(nowa==nowb) return a.l<b.l;
-	return nowa<nowb;
-}
 int main()
 {
     int len;
