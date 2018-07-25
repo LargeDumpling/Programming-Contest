@@ -2,7 +2,7 @@
  Author: LargeDumpling
  Email: LargeDumpling@qq.com
  Edit History:
-	2018-07-22	File created.
+	2018-07-24	File created.
 */
 
 #include<iostream>
@@ -10,15 +10,20 @@
 #include<cstdlib>
 #include<cstring>
 #include<cmath>
+#include<vector>
 #include<algorithm>
 using namespace std;
 const int MAXN=200050;
-const int M=262144;
-const long long mod=1000000007;
-long long d[M<<1][20],a[MAXN],ans[20];
-int n,m;
-template<typename Ty>
-void read1n(Ty &x)
+const int mod=1000000007;
+struct jz
+{
+	int l,r;
+	long long ans;
+	jz() { l=r=ans=0; }
+}Q[MAXN];
+int n,m,qn,a[MAXN];
+long long f[MAXN][20];
+void read1n(int &x)
 {
 	char ch;
 	for(ch=getchar();ch<'0'||'9'<ch;ch=getchar());
@@ -26,60 +31,97 @@ void read1n(Ty &x)
 		x=(x<<1)+(x<<3)+ch-'0';
 	return;
 }
-void query(int L,int R)
+void calc(int l,int r,vector<int> &q)
 {
-	int Lans[20],Rans[20],tem[20];
-	memset(Lans,0,sizeof(Lans));
-	memset(Rans,0,sizeof(Rans));
-	Lans[0]=Rans[0]=1;
-	for(L=L+M-1,R=R+M+1;L<R-1;L>>=1,R>>=1)
+	if(l==r)
 	{
-		if(!(L&1))
+		int cnt=1;
+		if(a[l]%m==0) cnt++;
+		for(unsigned i=0;i<q.size();i++)
+			Q[q[i]].ans=cnt;
+		return;
+	}
+	int mid=(l+r)>>1;
+	vector<int> qn[2];
+	/*for(int i=l;i<=r;i++)
+	{
+		memset(f[i],0,sizeof(f[i]));
+		f[i][0]++;
+		f[i][a[i]%m]++;
+	}
+	for(int i=mid-1;l<=i;i--)
+	{
+		long long tem[20];
+		memset(tem,0,sizeof(tem));
+		for(int j=0;j<m;j++) // This is not necessary, j is useful only when j==0 or j==a[i]
+			for(int k=0;k<m;k++)
+				tem[(j+k)%m]=(tem[(j+k)%m]+f[i][j]*f[i+1][k]%mod)%mod;
+		memcpy(f[i],tem,sizeof(tem));
+	}
+	for(int i=mid+2;i<=r;i++)
+	{
+		long long tem[20];
+		memset(tem,0,sizeof(tem));
+		for(int j=0;j<m;j++)
+			for(int k=0;k<m;k++)
+				tem[(j+k)%m]=(tem[(j+k)%m]+f[i][j]*f[i-1][k]%mod)%mod;
+		memcpy(f[i],tem,sizeof(tem));
+	}*/
+	memset(f[mid],0,sizeof(f[mid]));
+	f[mid][0]++; f[mid][a[mid]%m]++;
+	memset(f[mid+1],0,sizeof(f[mid+1]));
+	f[mid+1][0]++; f[mid+1][a[mid+1]%m]++;
+	long long tem[20];
+	for(int i=mid-1;l<=i;i--)
+	{
+		memset(tem,0,sizeof(tem));
+		for(int j=0;j<m;j++)
 		{
-			memset(tem,0,sizeof(tem));
-			for(int i=0;i<m;i++) for(int j=0;j<m;j++) tem[(i+j)%m]=(tem[(i+j)%m]+Lans[i]*d[L^1][j]%mod)%mod;
-			memcpy(Lans,tem,sizeof(tem));
+			tem[j]=(tem[j]+f[i+1][j])%mod;
+			tem[(j+a[i])%m]=(tem[(j+a[i])%m]+f[i+1][j])%mod;
 		}
-		if(R&1)
+		memcpy(f[i],tem,sizeof(tem));
+	}
+	for(int i=mid+2;i<=r;i++)
+	{
+		memset(tem,0,sizeof(tem));
+		for(int j=0;j<m;j++)
 		{
-			memset(tem,0,sizeof(tem));
-			for(int i=0;i<m;i++) for(int j=0;j<m;j++) tem[(i+j)%m]=(tem[(i+j)%m]+d[R^1][i]*Rans[j]%mod)%mod;
-			memcpy(Rans,tem,sizeof(tem));
+			tem[j]=(tem[j]+f[i-1][j])%mod;
+			tem[(j+a[i])%m]=(tem[(j+a[i])%m]+f[i-1][j])%mod;
+		}
+		memcpy(f[i],tem,sizeof(tem));
+	}
+	for(unsigned i=0;i<q.size();i++)
+	{
+		if(Q[q[i]].r<=mid) qn[0].push_back(q[i]);
+		if(mid<Q[q[i]].l) qn[1].push_back(q[i]);
+		if(Q[q[i]].l<=mid&&mid<Q[q[i]].r)
+		{
+			for(int j=0;j<m;j++)
+				Q[q[i]].ans=(Q[q[i]].ans+f[Q[q[i]].l][j]*f[Q[q[i]].r][(m-j)%m])%mod;
 		}
 	}
-	memset(ans,0,sizeof(ans));
-	for(int i=0;i<m;i++)
-		for(int j=0;j<m;j++)
-			ans[(i+j)%m]=(ans[(i+j)%m]+Lans[i]*Rans[j]%mod)%mod;
+	if(qn[0].size()) calc(l,mid,qn[0]);
+	if(qn[1].size()) calc(mid+1,r,qn[1]);
 	return;
 }
 int main()
 {
-	int l,r,Q;
-	long long tem[20];
 	read1n(n); read1n(m);
-	for(int i=0;i<(M<<1);i++)
-		d[i][0]=1;
 	for(int i=1;i<=n;i++)
-	{
 		read1n(a[i]);
-		d[i+M][a[i]%m]++;
-	}
-	for(int r=M-1;r;r--)
+	read1n(qn);
+	vector<int> q;
+	for(int i=1;i<=qn;i++)
 	{
-		memset(tem,0,sizeof(tem));
-		for(int i=0;i<m;i++)
-			for(int j=0;j<m;j++)
-				tem[(i+j)%m]=(tem[(i+j)%m]+d[r<<1][i]*d[r<<1|1][j]%mod)%mod;
-		memcpy(d[r],tem,sizeof(tem));
+		read1n(Q[i].l);
+		read1n(Q[i].r);
+		q.push_back(i);
 	}
-	read1n(Q);
-	while(Q-->0)
-	{
-		read1n(l); read1n(r);
-		query(l,r);
-		printf("%lld\n",ans[0]);
-	}
+	calc(1,n,q);
+	for(int i=1;i<=qn;i++)
+		printf("%lld\n",Q[i].ans);
 	fclose(stdin);
 	fclose(stdout);
 	return 0;
