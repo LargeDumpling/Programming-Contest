@@ -88,17 +88,17 @@ void cOunt(int mid)
 	for(int i=0;i<num;i++) if((ansS[1]>>i)&1)
 		//printf("%d ",mid+1+i);
 		d[++d[0]]=mid+1+i;
-	/*printf("%d\n",d[0]);
+	printf("%d\n",d[0]);
 	for(int i=1;i<=d[0];i++)
 		printf("%d ",d[i]);
-	putchar('\n');*/
-	printf("%d",ans);
+	putchar('\n');
+	//printf("%d",ans);
 	return;
 }
 int main()
 {
-	freopen("A.in","r",stdin);
-	freopen("A.out","w",stdout);
+	//freopen("A.in","r",stdin);
+	//freopen("A.out","w",stdout);
 	memset(f,0,sizeof(f));
 	int mid;
 	scanf("%d",&n);
