@@ -117,6 +117,11 @@ double calc(int x,double r)
 				S+=r*r*alpha/2.;
 				S+=cross(inter[0]-P0,P2-P0)/2.;
 			}
+			else if(0<=dcmp(l1-r)&&0<=dcmp(l2-r))
+			{
+				double alpha=asin(cross(P1-P0,P2-P0)/lenth(P1-P0)/lenth(P2-P0));
+				S+=r*r*alpha/2.;
+			}
 		}
 		else if(itn==2)
 		{
