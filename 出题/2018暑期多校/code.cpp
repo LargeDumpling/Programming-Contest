@@ -53,7 +53,7 @@ void init(long long A,long long B,long long C,long long D,long long x)
 }
 int main()
 {
-	char filename[20];
+	//char filename[20];
 	/*for(int T=0;T<25;T++)
 	{
 	sprintf(filename,"%d.in",T);
@@ -98,8 +98,7 @@ int main()
 			printf("%lld\n",ans.num[1][0]);
 		}
 	}
-	}
-	fprintf(stderr,"%lf\n",(double)clock()/CLOCKS_PER_SEC);
+	//fprintf(stderr,"%lf\n",(double)clock()/CLOCKS_PER_SEC);
 	fclose(stdin);
 	fclose(stdout);
 	return 0;
