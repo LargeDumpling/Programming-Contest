@@ -19,11 +19,8 @@ long long Rand()
 int main(int argc,char *argv[])
 {
 	int x; sscanf(argv[1],"%d",&x); srand(x);
+	freopen("Problem.in","w",stdout);
 	char filename[20];
-	for(int T=20;T<25;T++)
-	{
-		sprintf(filename,"%d.in",T);
-	freopen(filename,"w",stdout);
 	int T_T;
 	long long A,B,C,D,P,n;
 	//printf("%d\n",T_T=rand()%2+1);
@@ -41,13 +38,12 @@ int main(int argc,char *argv[])
 		C=rand()%1000000001;
 		D=rand()%1000000001;
 		P=Rand()%1000000000+1;
-		n=Rand()%1000000000+1;
-		P=735134400;
-		n=1000000000;
+		n=Rand()%1000000+1;
+		//P=735134400;
+		//n=1000000000;
 		//P=1000000000;
 		//n=10000000000;
 		printf("%lld %lld %lld %lld %lld %lld\n",A,B,C,D,P,n);
-	}
 	}
 	fclose(stdout);
 	return 0;

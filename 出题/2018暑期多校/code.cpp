@@ -1,10 +1,3 @@
-/*
- Author: LargeDumpling
- Email: LargeDumpling@qq.com
- Edit History:
-	2018-07-11	File created.
-*/
-
 #include<iostream>
 #include<cstdio>
 #include<cstdlib>
@@ -53,13 +46,6 @@ void init(long long A,long long B,long long C,long long D,long long x)
 }
 int main()
 {
-	//char filename[20];
-	/*for(int T=0;T<25;T++)
-	{
-	sprintf(filename,"%d.in",T);
-	freopen(filename,"r",stdin);
-	sprintf(filename,"%d.out",T);
-	freopen(filename,"w",stdout);*/
 	for(int i=0;i<3;i++) unit.num[i][i]=1;
 	scanf("%d",&T_T);
 	while(T_T--)
@@ -98,7 +84,6 @@ int main()
 			printf("%lld\n",ans.num[1][0]);
 		}
 	}
-	//fprintf(stderr,"%lf\n",(double)clock()/CLOCKS_PER_SEC);
 	fclose(stdin);
 	fclose(stdout);
 	return 0;

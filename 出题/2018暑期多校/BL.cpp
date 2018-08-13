@@ -53,8 +53,6 @@ void init(long long A,long long B,long long C,long long D,long long x)
 }
 int main()
 {
-	freopen("code.in","r",stdin);
-	freopen("BL.out","w",stdout);
 	for(int i=0;i<3;i++) unit.num[i][i]=1;
 	scanf("%d",&T_T);
 	while(T_T--)
@@ -83,7 +81,6 @@ int main()
 		}
 		printf("%lld\n",ans.num[1][0]);
 	}
-	fprintf(stderr,"%lf\n",(double)clock()/CLOCKS_PER_SEC);
 	fclose(stdin);
 	fclose(stdout);
 	return 0;
