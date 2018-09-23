@@ -14,7 +14,7 @@
 using namespace std;
 int T_T,r,sz=0,ch[200000][2];
 unsigned long long k,num[200000][3];
-long double ans[200000][3];
+long double ans[200000][3],w;
 template<typename Ty>
 void read1n(Ty &x)
 {
@@ -38,7 +38,6 @@ void clear(int u)
 }
 void calc(int u,unsigned long long len)
 {
-	unsigned long long len=num[u][0]+num[u][1]+num[u][2];
 	if(num[u][0]==len)
 	{
 		ans[u][0]=1;
@@ -58,7 +57,7 @@ void calc(int u,unsigned long long len)
 #define lch ch[u][0]
 #define rch ch[u][1]
 	clear(lch=++sz);
-	clear(lch=++sz);
+	clear(rch=++sz);
 	if(mid<=num[u][0])
 	{
 		num[lch][0]=mid;
@@ -80,6 +79,20 @@ void calc(int u,unsigned long long len)
 		num[lch][2]=mid-num[u][0]-num[u][1];
 		num[lch][2]=len-mid;
 	}
+	calc(lch,mid); calc(rch,mid);
+	long double cl[3][3]={
+		{w,w,w},
+		{1-w,w,1-w},
+		{1-w,w,w}},cr[3][3]={
+		{1-w,w,w},
+		{1-w,1-w,1-w},
+		{1-w,w,1-w}};
+	for(int i=0;i<3;i++)
+		for(int j=0;j<3;j++)
+		{
+			ans[u][i]+=ans[lch][i]*ans[rch][j]*cl[i][j];
+			ans[u][j]+=ans[lch][i]*ans[rch][j]*cr[j][i];
+		}
 #undef lch
 #undef rch
 	return;
@@ -93,6 +106,7 @@ int main()
 		clear(sz=1);
 		read1n(r);
 		read1n(k);
+		scanf("%lf",&p); w=p;
 		num[1][0]=k-1;
 		num[1][1]=(1ULL<<r)-k;
 		num[1][2]=1;
