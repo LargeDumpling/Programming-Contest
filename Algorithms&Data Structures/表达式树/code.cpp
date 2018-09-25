@@ -12,7 +12,8 @@
 #include<cmath>
 #include<algorithm>
 using namespace std;
-int nc,lch[100050],rch[100050],op[100050];
+const int MAXN=100050;
+int nc,lch[MAXN],rch[MAXN],op[MAXN];
 int build_tree(char *s,int x,int y)
 {
 	int c1=-1,c2=-1,p=0,u;

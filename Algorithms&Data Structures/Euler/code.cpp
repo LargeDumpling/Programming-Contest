@@ -5,34 +5,43 @@
 #include<cmath>
 #include<algorithm>
 using namespace std;
-int prime[100050],pn=-1,limit;
-void Euler(int n)
+const int MAXN=100050;
+int pri[MAXN],phi[MAXN],u[MAXN];
+bool vis[MAXN];
+void Euler()
 {
-	bool flag[n+1];
-	memset(flag,true,sizeof(flag));
-	for(int i=2;i<=n;i++)
+	memset(vis,true,sizeof(vis));
+	pri[0]=0;
+	u[1]=1; phi[1]=1;
+	for(int i=2;i<MAXN;i++)
 	{
-		if(flag[i])
-			prime[++pn]=i;
-		for(int j=0;j<=pn;j++)
+		if(vis[i])
 		{
-			if(i*prime[j]>n)
+			pri[++pri[0]]=i;
+			phi[i]=i-1;
+			u[i]=-1;
+		}
+		for(int j=1;j<=pri[0]&&i*pri[j]<MAXN;j++)
+		{
+			vis[i*pri[j]]=false;
+			if(i%pri[j])
+			{
+				phi[i*pri[j]]=phi[i]*(pri[j]-1);
+				u[i*pri[j]]=-u[i];
+			}
+			else
+			{
+				phi[i*pri[j]]=phi[i]*pri[j];
 				break;
-			flag[i*prime[j]]=false;
-			if(!i%prime[j])
-				break;
+			}
 		}
 	}
 }
 int main()
 {
-	scanf("%d",&limit);
-	if(limit)
-	{
-		Euler(limit);
-		for(int i=0;i<=pn;i++)
-			printf("%d ",prime[i]);
-	}
+	Euler();
+	for(int i=1;i<=20;i++)
+		printf("%d %d %d\n",i,phi[i],u[i]);
 	return 0;
 }
 

@@ -1,3 +1,10 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
+#include<cmath>
+#include<algorithm>
+using namespace std;
 template<typename Ty>
 struct heap
 {
@@ -53,4 +60,8 @@ struct heap
 	}
 	Ty top() { return data[tOp]; }
 };
+int main()
+{
+	return 0;
+}
 
