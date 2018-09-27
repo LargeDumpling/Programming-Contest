@@ -5,10 +5,12 @@
 #include<cmath>
 #include<algorithm>
 using namespace std;
-char tex[1050],T[100050];
+const int MAXL=100050;
+char tex[MAXL],T[MAXL];
+int pre[MAXL];
 int KMP()
 {
-	int n=strlen(tex),m=strlen(T),pre[1050],i,k;
+	int n=strlen(tex),m=strlen(T),i,k;
 	pre[0]=-1;
 	for(i=1,k=-1;i<n;pre[i++]=k)
 	{

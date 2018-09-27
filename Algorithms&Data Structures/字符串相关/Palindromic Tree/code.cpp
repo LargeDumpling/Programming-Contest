@@ -5,7 +5,9 @@
 #include<cmath>
 #include<algorithm>
 using namespace std;
-int ch[100050][26],len[100050],fail[100050],cnt[100050],last,sz;
+const int MAXN=100050;
+const int MAXC=26;
+int ch[MAXN][MAXC],len[MAXN],fail[MAXN],cnt[MAXN],last,sz;
 int getfail(char T[],int x,int i)
 {
 	while(T[i-len[x]-1]!=T[i]) x=fail[x];
@@ -27,9 +29,10 @@ void insert(char T[])
 		cur=getfail(T,last,i);
 		if(!ch[cur][T[i]-97])
 		{
-			ch[cur][T[i]-97]=++sz;
-			memset(ch[sz],0,sizeof(ch[sz])); len[sz]=0;
-			fail[sz]=ch[ getfail(T,fail[cur],i) ][T[i]-97];
+			fail[++sz]=ch[getfail(T,fail[cur],i)][T[i]-97];
+			ch[cur][T[i]-97]=sz;
+			memset(ch[sz],0,sizeof(ch[sz]));
+			len[sz]=len[cur]+2;
 		}
 		last=ch[cur][T[i]-97];
 		cnt[last]++;
@@ -37,8 +40,6 @@ void insert(char T[])
 }
 int main()
 {
-	freopen("in.txt","r",stdin);
-	freopen("out.txt","w",stdout);
 	fclose(stdin);
 	fclose(stdout);
 	return 0;
